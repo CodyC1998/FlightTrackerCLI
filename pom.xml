@@ -15,11 +15,19 @@
     </properties>
 
     <dependencies>
-        <!-- HTTP Client -->
+        <!-- Apache HTTP client core -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
-            <version>5.3</version>
+            <version>5.2.1</version>
+        </dependency>
+
+
+        <!-- Apache HTTP fluent client (needed for Request.get(...)) -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5-fluent</artifactId>
+            <version>5.2.1</version>
         </dependency>
 
         <!-- JSON Parsing -->
@@ -29,7 +37,7 @@
             <version>2.15.0</version>
         </dependency>
 
-        <!-- JUnit 5 -->
+        <!-- JUnit and Mockito -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -37,7 +45,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -45,4 +52,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>
