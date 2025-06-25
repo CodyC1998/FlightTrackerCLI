@@ -1,7 +1,11 @@
 package com.keyin;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.keyin.api.ApiClient;
+import com.keyin.model.Airport;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -21,7 +25,19 @@ public class Main {
                 case 1:
                     System.out.print("Enter City ID: ");
                     int cityId = scanner.nextInt();
-                    System.out.println(ApiClient.getAirportsByCity(cityId));
+                    String response = ApiClient.getAirportsByCity(cityId);
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    List<Airport> airports = Arrays.asList(mapper.readValue(response, Airport[].class));
+
+                    if (airports.isEmpty()) {
+                        System.out.println("No airports found in this city.");
+                    } else {
+                        System.out.println("Airports in the city:");
+                        for (Airport a : airports) {
+                            System.out.println("✈ " + a.getName() + " (" + a.getCode() + ")");
+                        }
+                    }
                     break;
                 case 2:
                     System.out.print("Enter Passenger ID: ");
