@@ -5,17 +5,16 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class ApiClientTest {
     private ApiClient.HttpExecutor mockExecutor;
-    private ApiClient apiClient;
+    private ApiClient client;
 
     @BeforeEach
     void setUp() {
         mockExecutor = mock(ApiClient.HttpExecutor.class);
-        apiClient = new ApiClient(mockExecutor);
+        client = new ApiClient(mockExecutor);
     }
 
     @Test
@@ -23,12 +22,12 @@ class ApiClientTest {
         int cityId = 7;
         String expected = "[{'id':1}]";
         String url = "https://sdat-s4-sprint-backend.onrender.com/cities/7/airports";
-        when(mockExecutor.get(eq(url))).thenReturn(expected);
+        when(mockExecutor.get(url)).thenReturn(expected);
 
-        String actual = apiClient.getAirportsByCity(cityId);
+        String actual = client.getAirportsByCity(cityId);
 
         assertEquals(expected, actual);
-        verify(mockExecutor, times(1)).get(url);
+        verify(mockExecutor).get(url);
     }
 
     @Test
@@ -36,9 +35,9 @@ class ApiClientTest {
         int passengerId = 3;
         String expected = "[{'type':'Boeing 737'}]";
         String url = "https://sdat-s4-sprint-backend.onrender.com/passengers/3/aircraft";
-        when(mockExecutor.get(eq(url))).thenReturn(expected);
+        when(mockExecutor.get(url)).thenReturn(expected);
 
-        String actual = apiClient.getAircraftByPassenger(passengerId);
+        String actual = client.getAircraftByPassenger(passengerId);
 
         assertEquals(expected, actual);
         verify(mockExecutor).get(url);
@@ -49,9 +48,9 @@ class ApiClientTest {
         int aircraftId = 5;
         String expected = "[{'code':'YYC'}]";
         String url = "https://sdat-s4-sprint-backend.onrender.com/aircraft/5/airports";
-        when(mockExecutor.get(eq(url))).thenReturn(expected);
+        when(mockExecutor.get(url)).thenReturn(expected);
 
-        String actual = apiClient.getAirportsForAircraft(aircraftId);
+        String actual = client.getAirportsForAircraft(aircraftId);
 
         assertEquals(expected, actual);
         verify(mockExecutor).get(url);
@@ -62,9 +61,9 @@ class ApiClientTest {
         int passengerId = 12;
         String expected = "[{'name':'John Doe Airport'}]";
         String url = "https://sdat-s4-sprint-backend.onrender.com/passengers/12/airports";
-        when(mockExecutor.get(eq(url))).thenReturn(expected);
+        when(mockExecutor.get(url)).thenReturn(expected);
 
-        String actual = apiClient.getAirportsUsedByPassenger(passengerId);
+        String actual = client.getAirportsUsedByPassenger(passengerId);
 
         assertEquals(expected, actual);
         verify(mockExecutor).get(url);
