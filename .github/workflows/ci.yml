@@ -1,6 +1,6 @@
 name: CI
 
-# run on pushes and PRs targeting main
+# Run on pushes and PRs targeting main
 on:
   push:
     branches:
@@ -32,4 +32,4 @@ jobs:
             ${{ runner.os }}-m2-
 
       - name: Build & run tests
-        run: mvn --batch-mode test
+        run: mvn --batch-mode clean test
