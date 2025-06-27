@@ -1,48 +1,72 @@
 package com.keyin.api;
 
-import org.apache.hc.client5.http.fluent.Content;
-import org.apache.hc.client5.http.fluent.Request;
-import org.apache.hc.client5.http.fluent.Response;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class ApiClientTest {
+    private ApiClient.HttpExecutor mockExecutor;
+    private ApiClient apiClient;
+
+    @BeforeEach
+    void setUp() {
+        mockExecutor = mock(ApiClient.HttpExecutor.class);
+        apiClient = new ApiClient(mockExecutor);
+    }
 
     @Test
-    void getAirportsByCity_returnsRawJson() throws IOException {
-        // given
-        int cityId = 42;
-        String expectedJson = "[{\"id\":1,\"name\":\"YYT Airport\",\"code\":\"YYT\",\"city\":42}]";
-        String endpoint = "https://sdat-s4-sprint-backend.onrender.com/cities/42/airports";
+    void getAirportsByCity_shouldCallExecutorWithCorrectUrl() throws IOException {
+        int cityId = 7;
+        String expected = "[{'id':1}]";
+        String url = "https://sdat-s4-sprint-backend.onrender.com/cities/7/airports";
+        when(mockExecutor.get(eq(url))).thenReturn(expected);
 
-        // mock static Request.get(...) and its execute/returnContent/asString chain
-        try (MockedStatic<Request> mockRequest = mockStatic(Request.class)) {
-            Request fakeReq = mock(Request.class);
-            Response fakeResp = mock(Response.class);
-            Content fakeContent = mock(Content.class);
+        String actual = apiClient.getAirportsByCity(cityId);
 
-            // when Request.get(endpoint) is called, return our fakeReq
-            mockRequest.when(() -> Request.get(endpoint)).thenReturn(fakeReq);
+        assertEquals(expected, actual);
+        verify(mockExecutor, times(1)).get(url);
+    }
 
-            // chain the fluent calls
-            when(fakeReq.execute()).thenReturn(fakeResp);
-            when(fakeResp.returnContent()).thenReturn(fakeContent);
-            when(fakeContent.asString()).thenReturn(expectedJson);
+    @Test
+    void getAircraftByPassenger_shouldCallExecutorWithCorrectUrl() throws IOException {
+        int passengerId = 3;
+        String expected = "[{'type':'Boeing 737'}]";
+        String url = "https://sdat-s4-sprint-backend.onrender.com/passengers/3/aircraft";
+        when(mockExecutor.get(eq(url))).thenReturn(expected);
 
-            // exercise
-            String actual = ApiClient.getAirportsByCity(cityId);
+        String actual = apiClient.getAircraftByPassenger(passengerId);
 
-            // verify & assert
-            assertEquals(expectedJson, actual);
-            mockRequest.verify(() -> Request.get(endpoint), times(1));
-            verify(fakeReq, times(1)).execute();
-            verify(fakeResp, times(1)).returnContent();
-            verify(fakeContent, times(1)).asString();
-        }
+        assertEquals(expected, actual);
+        verify(mockExecutor).get(url);
+    }
+
+    @Test
+    void getAirportsForAircraft_shouldCallExecutorWithCorrectUrl() throws IOException {
+        int aircraftId = 5;
+        String expected = "[{'code':'YYC'}]";
+        String url = "https://sdat-s4-sprint-backend.onrender.com/aircraft/5/airports";
+        when(mockExecutor.get(eq(url))).thenReturn(expected);
+
+        String actual = apiClient.getAirportsForAircraft(aircraftId);
+
+        assertEquals(expected, actual);
+        verify(mockExecutor).get(url);
+    }
+
+    @Test
+    void getAirportsUsedByPassenger_shouldCallExecutorWithCorrectUrl() throws IOException {
+        int passengerId = 12;
+        String expected = "[{'name':'John Doe Airport'}]";
+        String url = "https://sdat-s4-sprint-backend.onrender.com/passengers/12/airports";
+        when(mockExecutor.get(eq(url))).thenReturn(expected);
+
+        String actual = apiClient.getAirportsUsedByPassenger(passengerId);
+
+        assertEquals(expected, actual);
+        verify(mockExecutor).get(url);
     }
 }
