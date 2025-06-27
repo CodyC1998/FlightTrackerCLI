@@ -20,7 +20,7 @@ public class ApiClient {
     }
 
     /**
-     * Default executor using Apache HTTPClient fluent API.
+     * Default executor using Apache HTTPClient fluent API. a
      */
     private static class DefaultHttpExecutor implements HttpExecutor {
         @Override
