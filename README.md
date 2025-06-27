@@ -59,7 +59,7 @@ GET /passengers/{id}/aircraft
 
 GET /aircraft/{id}/airports 
 
-GET /passengers/{id}/used-airports 
+GET /passengers/{id}/airports 
 
 ---
 
