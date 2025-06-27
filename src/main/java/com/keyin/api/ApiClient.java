@@ -22,7 +22,7 @@ public class ApiClient {
     }
 
     public static String getAirportsUsedByPassenger(int passengerId) throws IOException {
-        String endpoint = BASE_URL + "passengers/" + passengerId + "/used-airports";
+        String endpoint = BASE_URL + "passengers/" + passengerId + "/airports";
         return Request.get(endpoint).execute().returnContent().asString();
     }
 }

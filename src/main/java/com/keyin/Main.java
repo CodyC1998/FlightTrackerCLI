@@ -56,8 +56,7 @@ public class Main {
                         } else {
                             System.out.println("Aircraft flown by this passenger:");
                             for (Aircraft a : aircraftList) {
-                                System.out.println("✈ " + a.getType() + " - " + a.getAirlineName()
-                                        + " (Capacity: " + a.getNumberOfPassengers() + ")");
+                                System.out.println("✈ " + a.getType() + " - " + a.getAirlineName());
                             }
                         }
                         break;
@@ -99,8 +98,6 @@ public class Main {
                 System.err.println("Error: " + e.getMessage());
             }
         }
-
         scanner.close();
     }
-
 }
